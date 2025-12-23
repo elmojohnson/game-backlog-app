@@ -16,7 +16,7 @@ function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
 function FullScreenSpinner() {
   return (
     <div className="w-screen h-50 flex items-center justify-center">
-      <Spinner />
+      <Spinner className="size-6" />
     </div>
   );
 }

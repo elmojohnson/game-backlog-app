@@ -1,6 +1,7 @@
 import type { SignInDto, SignUpDto } from "@/schemas/auth.schema";
 import supabase from "@/utils/supabase.util";
 
+// SIGN UP
 export const signUpWIthEmailAndPassword = async ({
   email,
   password,
@@ -23,6 +24,7 @@ export const signUpWIthEmailAndPassword = async ({
   return data;
 };
 
+// SIGN IN
 export const signInWithPassword = async ({ email, password }: SignInDto) => {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
@@ -36,6 +38,7 @@ export const signInWithPassword = async ({ email, password }: SignInDto) => {
   return data;
 };
 
+// CURRENT USER
 export const getCurrentUser = async () => {
   const {
     data: { user },
@@ -47,4 +50,15 @@ export const getCurrentUser = async () => {
   }
 
   return user;
+};
+
+// SIGN OUT
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut({ scope: "local" });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return;
 };
