@@ -1,4 +1,4 @@
-import type { SignUpDto } from "@/schemas/auth.schema";
+import type { SignInDto, SignUpDto } from "@/schemas/auth.schema";
 import supabase from "@/utils/supabase.util";
 
 export const signUpWIthEmailAndPassword = async ({
@@ -14,6 +14,19 @@ export const signUpWIthEmailAndPassword = async ({
         name,
       },
     },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const signInWithPassword = async ({ email, password }: SignInDto) => {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
   });
 
   if (error) {

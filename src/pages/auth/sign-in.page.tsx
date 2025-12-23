@@ -12,12 +12,17 @@ import {
 import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
+import { useSignInWithPasswordMutation } from "@/queries/mutations/auth.mutation";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 const SignIn = () => {
+  const navigate = useNavigate();
+
   type FormInput = {
     name: keyof SignInDto;
     label: string;
@@ -48,13 +53,18 @@ const SignIn = () => {
     },
   });
 
-  const onSubmit = (data: SignInDto) => {
-    if (data.email === "error@test.com") {
-      form.setError("root", { type: "custom", message: "Invalid credentials" });
-    }
+  const mutation = useSignInWithPasswordMutation();
 
-    console.log(data);
+  const onSubmit = (data: SignInDto) => {
+    mutation.mutate(data);
   };
+
+  useEffect(() => {
+    if (mutation.isSuccess) {
+      toast.info("Logged in");
+      navigate("/backlogs");
+    }
+  }, [mutation.status]);
 
   return (
     <div className="w-screen h-screen flex items-center justify-center">
@@ -87,7 +97,7 @@ const SignIn = () => {
                         placeholder={input.label}
                         autoComplete="off"
                         type={input.type}
-                        disabled={form.formState.isSubmitting}
+                        disabled={mutation.isPending}
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
@@ -100,12 +110,12 @@ const SignIn = () => {
           </form>
         </CardContent>
         <CardFooter className="flex flex-col gap-2">
-          {form.formState.errors.root?.type == "custom" && (
+          {mutation.isError && (
             <Alert variant="destructive">
               <AlertCircleIcon />
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>
-                <p>{form.formState.errors.root.message}</p>
+                <p>{mutation.error.message}</p>
               </AlertDescription>
             </Alert>
           )}
@@ -114,16 +124,16 @@ const SignIn = () => {
             type="submit"
             form="sign-in-form"
             id="sign-in-button"
-            disabled={form.formState.isSubmitting}
+            disabled={mutation.isPending}
           >
-            {form.formState.isSubmitting && <Spinner />}
+            {mutation.isPending && <Spinner />}
             Sign in
           </Button>
           <Button
             className="w-full"
             variant="outline"
             asChild
-            disabled={form.formState.isSubmitting}
+            disabled={mutation.isPending}
           >
             <Link to="/auth/sign-up">Create an account</Link>
           </Button>

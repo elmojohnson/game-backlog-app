@@ -16,7 +16,7 @@ import { Link, useNavigate } from "react-router";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircleIcon } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
-import { useMutateSignUpWithEmailAndPassword } from "@/queries/mutations/auth.mutation";
+import { useSignUpWithEmailAndPasswordMutation } from "@/queries/mutations/auth.mutation";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
@@ -60,7 +60,7 @@ const SignUp = () => {
     },
   });
 
-  const mutation = useMutateSignUpWithEmailAndPassword();
+  const mutation = useSignUpWithEmailAndPasswordMutation();
 
   const onSubmit = (data: SignUpDto) => {
     mutation.mutate(data);
