@@ -52,7 +52,13 @@ createRoot(document.getElementById("root")!).render(
           />
         </Routes>
       </BrowserRouter>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          classNames: {
+            toast: "toast",
+          },
+        }}
+      />
     </ThemeProvider>
   </QueryClientProvider>
 );

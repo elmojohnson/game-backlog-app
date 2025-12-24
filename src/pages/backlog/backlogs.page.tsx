@@ -67,7 +67,11 @@ const Backlogs = () => {
       </div>
 
       {hasNextPage && (
-        <Button disabled={isFetchingNextPage} onClick={() => fetchNextPage()}>
+        <Button
+          disabled={isFetchingNextPage}
+          onClick={() => fetchNextPage()}
+          data-testid="load-more-button"
+        >
           {isFetchingNextPage && <Spinner />}
           Load more
         </Button>

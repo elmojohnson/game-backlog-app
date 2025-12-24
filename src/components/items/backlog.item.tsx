@@ -7,11 +7,12 @@ const BacklogItem = ({ backlog }: { backlog: Backlog }) => {
   const navigate = useNavigate();
 
   return (
-    <Card className="flex flex-col justify-between">
+    <Card className="flex flex-col justify-between" test-dataid="backlog-item">
       <CardHeader>
         <CardTitle
           className="hover:text-primary hover:cursor-pointer w-fit"
           onClick={() => navigate("/backlogs/" + backlog.id)}
+          data-testid="backlog-item-title"
         >
           {backlog.name}
         </CardTitle>

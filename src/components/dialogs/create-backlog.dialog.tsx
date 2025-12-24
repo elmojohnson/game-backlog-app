@@ -47,7 +47,10 @@ const CreateBacklogDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button><Plus />Create</Button>
+        <Button data-testid="create-dialog-trigger">
+          <Plus />
+          Create
+        </Button>
       </DialogTrigger>
       <DialogContent aria-describedby={undefined}>
         <DialogHeader>
@@ -56,6 +59,7 @@ const CreateBacklogDialog = () => {
         <div className="overflow-x-auto">
           <form
             id="create-backlog-form"
+            data-testid="create-backlog-form"
             onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-4"
           >
@@ -68,6 +72,7 @@ const CreateBacklogDialog = () => {
                   <Input
                     {...field}
                     id="name-input"
+                    data-testid="name-input"
                     aria-invalid={fieldState.invalid}
                     placeholder="Name"
                     autoComplete="off"
@@ -90,6 +95,7 @@ const CreateBacklogDialog = () => {
                   <Textarea
                     {...field}
                     id="description-input"
+                    data-testid="description-input"
                     aria-invalid={fieldState.invalid}
                     placeholder="Description"
                     autoComplete="off"
@@ -116,6 +122,8 @@ const CreateBacklogDialog = () => {
           <Button
             type="submit"
             form="create-backlog-form"
+            id="create-button"
+            data-testid="create-button"
             disabled={mutation.isPending}
           >
             {mutation.isPending && <Spinner />}
