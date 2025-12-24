@@ -19,9 +19,11 @@ import { Spinner } from "@/components/ui/spinner";
 import { useSignUpWithEmailAndPasswordMutation } from "@/queries/mutations/auth.mutation";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { useCurrentUserQuery } from "@/queries/queries/auth.query";
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const { data: user } = useCurrentUserQuery();
 
   type FormInput = {
     name: keyof SignUpDto;
@@ -65,6 +67,12 @@ const SignUp = () => {
   const onSubmit = (data: SignUpDto) => {
     mutation.mutate(data);
   };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/backlogs");
+    }
+  }, [user]);
 
   useEffect(() => {
     if (mutation.isSuccess) {
