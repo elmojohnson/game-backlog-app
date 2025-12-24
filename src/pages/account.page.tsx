@@ -4,13 +4,11 @@ import { FullScreenSpinner, Spinner } from "@/components/ui/spinner";
 import { useSignOutMutation } from "@/queries/mutations/auth.mutation";
 import { useCurrentUserQuery } from "@/queries/queries/auth.query";
 import { useEffect } from "react";
-import { useNavigate } from "react-router";
 import { toast } from "sonner";
 
 const Account = () => {
   const { data: user, isPending, isError, error } = useCurrentUserQuery(); // TODO: Avoid user query duplication from protected route check
   const mutation = useSignOutMutation();
-  const navigate = useNavigate();
 
   if (isPending) {
     return <FullScreenSpinner />;
@@ -26,7 +24,7 @@ const Account = () => {
     }
 
     if (mutation.isSuccess) {
-      navigate("/auth/sign-in");
+      window.location.href = "/auth/sign-in";
     }
   }, [mutation.status]);
 
