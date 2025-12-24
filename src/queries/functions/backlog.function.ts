@@ -23,10 +23,13 @@ export const getBacklogs = async ({
 }: {
   pageParam: number;
 }): Promise<Backlog[]> => {
+  const user = await getCurrentUser();
+
   const range = getRange(pageParam, 5);
   const { data, error } = await supabase
     .from("backlogs")
     .select("*")
+    .eq("user_id", user?.id)
     .range(range[0], range[1]);
 
   if (error) {
