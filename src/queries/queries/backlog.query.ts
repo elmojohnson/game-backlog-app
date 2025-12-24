@@ -5,12 +5,13 @@ export const userBacklogInfiniteQuery = () => {
   return useInfiniteQuery({
     queryKey: ["myBacklogs"],
     queryFn: getBacklogs,
-    initialPageParam: 0,
-    getNextPageParam: (lastPage, pages) => {
-      const nextPage: number | undefined = lastPage?.length
-        ? pages?.length
-        : undefined;
-      return nextPage;
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, _, lastPageParam) => {
+      if(Math.ceil(lastPage.totalPages! / lastPageParam) <= 1) {
+        return undefined;
+      }
+
+      return lastPageParam + 1;
     },
   });
 };
