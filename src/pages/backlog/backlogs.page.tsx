@@ -1,9 +1,11 @@
-import React from 'react'
+import Layout from "@/components/layouts/main/layout";
 
 const Backlogs = () => {
   return (
-    <div>Backlog</div>
-  )
-}
+    <Layout>
+      <h1>Backlogs</h1>
+    </Layout>
+  );
+};
 
-export default Backlogs
+export default Backlogs;

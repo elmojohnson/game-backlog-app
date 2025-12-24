@@ -1,3 +1,4 @@
+import Layout from "@/components/layouts/main/layout";
 import { Button } from "@/components/ui/button";
 import { FullScreenSpinner, Spinner } from "@/components/ui/spinner";
 import { useSignOutMutation } from "@/queries/mutations/auth.mutation";
@@ -30,7 +31,7 @@ const Account = () => {
   }, [mutation.status]);
 
   return (
-    <div className="wrapper py-4">
+    <Layout>
       <div className="mb-4">
         <h5 className="font-bold text-lg">{user?.user_metadata.name}</h5>
         <span>Email: {user?.email}</span>
@@ -38,7 +39,7 @@ const Account = () => {
       <Button onClick={() => mutation.mutate()} disabled={mutation.isPending}>
         {mutation.isPending && <Spinner />}Sign out
       </Button>
-    </div>
+    </Layout>
   );
 };
 

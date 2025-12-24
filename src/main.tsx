@@ -12,44 +12,47 @@ import Account from "./pages/account.page";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "./components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 import ProtectedRoute from "./components/protected-route";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
-    <BrowserRouter>
-      <Routes>
-        <Route path="*" element={<NotFound />} />
-        <Route index element={<Home />} />
-        <Route path="auth/sign-in" element={<SignIn />} />
-        <Route path="auth/sign-up" element={<SignUp />} />
-        <Route
-          path="backlogs"
-          element={
-            <ProtectedRoute>
-              <Backlogs />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="backlogs/:id"
-          element={
-            <ProtectedRoute>
-              <ViewBacklog />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="account"
-          element={
-            <ProtectedRoute>
-              <Account />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
-    <Toaster />
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <BrowserRouter>
+        <Routes>
+          <Route path="*" element={<NotFound />} />
+          <Route index element={<Home />} />
+          <Route path="auth/sign-in" element={<SignIn />} />
+          <Route path="auth/sign-up" element={<SignUp />} />
+          <Route
+            path="backlogs"
+            element={
+              <ProtectedRoute>
+                <Backlogs />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="backlogs/:id"
+            element={
+              <ProtectedRoute>
+                <ViewBacklog />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="account"
+            element={
+              <ProtectedRoute>
+                <Account />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </BrowserRouter>
+      <Toaster />
+    </ThemeProvider>
   </QueryClientProvider>
 );
