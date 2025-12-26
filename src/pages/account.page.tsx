@@ -31,10 +31,10 @@ const Account = () => {
   return (
     <Layout>
       <div className="mb-4">
-        <h5 className="font-bold text-lg">{user?.user_metadata.name}</h5>
-        <span>Email: {user?.email}</span>
+        <h5 className="font-bold text-lg" data-testid="name">{user?.user_metadata.name}</h5>
+        <span data-testid="email">Email: {user?.email}</span>
       </div>
-      <Button onClick={() => mutation.mutate()} disabled={mutation.isPending}>
+      <Button onClick={() => mutation.mutate()} disabled={mutation.isPending} data-testid="sign-out-button">
         {mutation.isPending && <Spinner />}Sign out
       </Button>
     </Layout>

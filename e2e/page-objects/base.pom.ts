@@ -16,11 +16,22 @@ export class BasePage {
     this.toast = page.locator(".toast").first();
   }
 
-  assertBacklogPage = async () => {
+  assertBacklogPage = async (isEmpty: boolean = false) => {
     await expect(this.page).toHaveURL("/backlogs");
-    await expect(
-      this.page.getByRole("heading", { name: "My Backlogs", exact: true })
-    ).toBeVisible();
+
+    if (isEmpty) {
+      await expect(this.page.getByTestId("empty-backlog-title")).toHaveText(
+        "Your backlog is empty"
+      );
+    } else {
+      await expect(
+        this.page.getByRole("heading", { name: "My Backlogs", exact: true })
+      ).toBeVisible();
+    }
+  };
+
+  assertAccountPage = async () => {
+    await expect(this.page).toHaveURL("/account");
   };
 
   assertToast = async (message: string) => {

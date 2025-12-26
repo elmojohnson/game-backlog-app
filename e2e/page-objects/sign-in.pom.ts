@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { expect, Locator, Page } from "@playwright/test";
 import { BasePage } from "./base.pom";
 import { SignInDto } from "../../src/schemas/auth.schema";
 
@@ -16,6 +16,10 @@ export class SignInPage extends BasePage {
 
   goTo = async () => {
     await this.page.goto("/auth/sign-in");
+  };
+
+  assertSignInPage = async () => {
+    await expect(this.page).toHaveURL("/auth/sign-in");
   };
 
   signIn = async ({ email, password }: SignInDto) => {

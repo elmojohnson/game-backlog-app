@@ -1,11 +1,47 @@
+import { SignUpDto } from "../src/schemas/auth.schema";
 import { test } from "./fixtures";
+import { randomUUID } from "crypto";
+import { userData } from "./data/user.data";
 
-test.describe("E2E test", () => {
-  test("Happy path", async ({ signInPage, backlogsPage }) => {
+const user: SignUpDto = {
+  name: "Automation Tester",
+  email: `automation+${randomUUID()}@test.com`,
+  password: userData.commonPassword,
+};
+
+test.describe("E2E test", { tag: "@e2e" }, () => {
+  test("Sign up, account details, and sign out", async ({
+    basePage,
+    signUpPage,
+    backlogsPage,
+    accountPage,
+    signInPage,
+  }) => {
+    await signUpPage.goTo();
+    await signUpPage.signUp(user);
+    await basePage.assertToast("Account created!");
+
+    await basePage.assertBacklogPage(true);
+    await backlogsPage.accountLink.click();
+    await backlogsPage.assertAccountPage();
+
+    await accountPage.assertAccountInfo(user.name, user.email);
+    await accountPage.signOut();
+    await signInPage.assertSignInPage();
+  });
+
+  test("Sign in and create backlog", async ({
+    basePage,
+    signInPage,
+    backlogsPage,
+  }) => {
     await signInPage.goTo();
-    await signInPage.signIn({ email: "test@test.com", password: "pass123" });
-    await signInPage.assertToast("Logged in");
-    await signInPage.assertBacklogPage();
+    await signInPage.signIn({
+      email: user.email,
+      password: user.password,
+    });
+    await basePage.assertToast("Logged in");
+    await basePage.assertBacklogPage(true);
 
     await backlogsPage.createBacklog({
       name: "Test 123",
@@ -16,9 +52,5 @@ test.describe("E2E test", () => {
     await backlogsPage.page.goBack();
     await backlogsPage.assertBacklogPage();
     await backlogsPage.assertBacklogItem("Test 123");
-
-    await backlogsPage.assertNumberOfItems(5);
-    await backlogsPage.loadMoreData();
-    await backlogsPage.assertNumberOfItems(10);
   });
 });

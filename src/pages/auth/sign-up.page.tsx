@@ -107,7 +107,8 @@ const SignUp = () => {
                       </FieldLabel>
                       <Input
                         {...field}
-                        id={input.label + "-input"}
+                        id={input.name + "-input"}
+                        data-testid={input.name + "-input"}
                         aria-invalid={fieldState.invalid}
                         placeholder={input.label}
                         autoComplete="off"
@@ -139,6 +140,7 @@ const SignUp = () => {
             type="submit"
             form="sign-up-form"
             id="sign-up-button"
+            data-testid="sign-up-button"
             disabled={mutation.isPending}
           >
             {mutation.isPending && <Spinner />}

@@ -87,7 +87,7 @@ const EmptyContents = () => {
         <EmptyMedia variant="icon">
           <Ghost />
         </EmptyMedia>
-        <EmptyTitle>Your backlog is empty</EmptyTitle>
+        <EmptyTitle data-testid="empty-backlog-title">Your backlog is empty</EmptyTitle>
         <EmptyDescription>Create your backlog now!</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
