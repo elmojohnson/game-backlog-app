@@ -21,12 +21,22 @@ npx supabase start
 ```
 npx supabase stop
 ```
+---
+## Start the project
 
-**Local development guide**
+**Local**
+```
+npm run dev:localdev
+```
+
+**Staging**
+```
+npm run dev:staging
+```
+---
+## Sync local DB to remote DB
 https://supabase.com/docs/guides/local-development/overview
 
-
-## Sync local DB to remote DB
 **Creating a migation file**
 ```
 npx supabase db diff --use-migra initial_schema -f initial_schema
