@@ -35,6 +35,7 @@ export class BasePage {
   };
 
   assertToast = async (message: string) => {
+    await this.toast.waitFor();
     await expect(this.toast).toHaveText(message);
   };
 }

@@ -1,15 +1,14 @@
 import { SignUpDto } from "../src/schemas/auth.schema";
 import { test } from "./fixtures";
-import { randomUUID } from "crypto";
-import { userData } from "./data/user.data";
+import { faker } from "@faker-js/faker";
 
 const user: SignUpDto = {
-  name: "Automation Tester",
-  email: `automation+${randomUUID()}@test.com`,
-  password: userData.commonPassword,
+  name: faker.person.fullName(),
+  email: faker.internet.email().toLocaleLowerCase(),
+  password: faker.internet.password(),
 };
 
-test.describe("E2E test", { tag: "@e2e" }, () => {
+test.describe.serial("E2E test", { tag: "@e2e" }, () => {
   test("Sign up, account details, and sign out", async ({
     basePage,
     signUpPage,
