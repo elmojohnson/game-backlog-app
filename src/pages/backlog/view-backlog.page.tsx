@@ -1,9 +1,7 @@
-import React from 'react'
+import BacklogProvider from "@/contexts/backlog.context";
 
 const ViewBacklog = () => {
-  return (
-    <div>ViewBacklog</div>
-  )
-}
+  return <BacklogProvider>TODO: Games here</BacklogProvider>;
+};
 
-export default ViewBacklog
+export default ViewBacklog;

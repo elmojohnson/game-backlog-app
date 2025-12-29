@@ -1,4 +1,4 @@
-import type { Backlog } from "@/tpes/backlog.type";
+import type { Backlog } from "@/types/backlog.type";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { useNavigate } from "react-router";
 import moment from "moment";
