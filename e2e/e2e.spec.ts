@@ -9,47 +9,66 @@ const user: SignUpDto = {
 };
 
 test.describe.serial("E2E test", { tag: "@e2e" }, () => {
-  test("Sign up, account details, and sign out", async ({
+  test("Account", async ({
     basePage,
     signUpPage,
     backlogsPage,
     accountPage,
     signInPage,
   }) => {
-    await signUpPage.goTo();
-    await signUpPage.signUp(user);
-    await basePage.assertToast("Account created!");
+    await test.step("Create an account", async () => {
+      await signUpPage.goTo();
+      await signUpPage.signUp(user);
+      await basePage.assertToast("Account created!");
+      await basePage.assertBacklogPage(true);
+    });
 
-    await basePage.assertBacklogPage(true);
-    await backlogsPage.accountLink.click();
-    await backlogsPage.assertAccountPage();
+    await test.step("Account page", async () => {
+      await backlogsPage.accountLink.click();
+      await backlogsPage.assertAccountPage();
+      await accountPage.assertAccountInfo(user.name, user.email);
+    });
 
-    await accountPage.assertAccountInfo(user.name, user.email);
-    await accountPage.signOut();
-    await signInPage.assertSignInPage();
+    await test.step("Sign out", async () => {
+      await accountPage.signOut();
+      await signInPage.assertSignInPage();
+    });
   });
 
-  test("Sign in and create backlog", async ({
+  test("Backlog management", async ({
     basePage,
     signInPage,
     backlogsPage,
+    viewBacklogPage,
   }) => {
-    await signInPage.goTo();
-    await signInPage.signIn({
-      email: user.email,
-      password: user.password,
+    await test.step("Sign in", async () => {
+      await signInPage.goTo();
+      await signInPage.signIn({
+        email: user.email,
+        password: user.password,
+      });
+      await basePage.assertToast("Logged in");
+      await basePage.assertBacklogPage(true);
     });
-    await basePage.assertToast("Logged in");
-    await basePage.assertBacklogPage(true);
 
-    await backlogsPage.createBacklog({
-      name: "Test 123",
-      description: "This is a test description!",
+    await test.step("Create a backlog", async () => {
+      await backlogsPage.createBacklog({
+        name: "Test 123",
+        description: "This is a test description!",
+      });
+      await backlogsPage.assertToast("Backlog created!");
+      await viewBacklogPage.assertNavTitle("Test 123");
     });
-    await backlogsPage.assertToast("Backlog created!");
 
-    await backlogsPage.page.goBack();
-    await backlogsPage.assertBacklogPage();
-    await backlogsPage.assertBacklogItem("Test 123");
+    await test.step("Update backlog", async () => {
+      await viewBacklogPage.openUpdateDialog();
+      await viewBacklogPage.updateBacklog({
+        name: "My Backlog 123",
+        description: "This is an updated backlog",
+      });
+      await viewBacklogPage.assertToast("Updated!");
+      await viewBacklogPage.closeUpdateDialog();
+      await viewBacklogPage.assertNavTitle("My Backlog 123");
+    });
   });
 });
