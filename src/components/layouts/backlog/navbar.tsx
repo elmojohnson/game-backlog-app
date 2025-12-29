@@ -31,7 +31,7 @@ const Navbar = () => {
           <Button size="icon" variant="ghost" onClick={() => navigate(-1)}>
             <ArrowLeft />
           </Button>
-          <h1 className="font-bold text-xl">
+          <h1 className="font-bold text-xl" data-testid="nav-title">
             {ctx?.backlogDetails.data?.name}
           </h1>
         </div>

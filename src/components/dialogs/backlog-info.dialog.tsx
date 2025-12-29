@@ -38,7 +38,7 @@ const BacklogInfoDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="icon" variant="ghost">
+        <Button size="icon" variant="ghost" data-testid="update-dialog-trigger">
           <InfoIcon />
         </Button>
       </DialogTrigger>
