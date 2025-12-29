@@ -4,9 +4,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { BacklogContext } from "@/contexts/backlog.context";
 import { ArrowLeft } from "lucide-react";
 import { useContext } from "react";
+import { useNavigate } from "react-router";
 
 const Navbar = () => {
   const ctx = useContext(BacklogContext);
+  const navigate = useNavigate();
 
   if (ctx?.backlogDetails.isPending) {
     return (
@@ -26,7 +28,7 @@ const Navbar = () => {
     <div className="py-3 shadow">
       <div className="wrapper flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Button size="icon" variant="ghost">
+          <Button size="icon" variant="ghost" onClick={() => navigate(-1)}>
             <ArrowLeft />
           </Button>
           <h1 className="font-bold text-xl">
