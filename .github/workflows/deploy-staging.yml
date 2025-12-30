@@ -26,9 +26,6 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      - name: Run staging
-        run: npm run preview
-
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
         env:
