@@ -19,15 +19,22 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
       - name: Build the app
         run: npm run build
 
       - name: Run staging
-        run: npm run dev:staging
+        run: npm run preview
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
+        env:
+          TEST_BASE_URL: ${{ vars.TEST_BASE_URL }}
+          TEST_REGISTERED_USER_EMAIL: ${{ vars.TEST_REGISTERED_USER_EMAIL }}
+          TEST_USER_COMMON_PASSWORD: ${{ secrets.TEST_USER_COMMON_PASSWORD }}
 
       - name: Run E2E test
         run: npm run test:e2e
