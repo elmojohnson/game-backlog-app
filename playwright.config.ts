@@ -22,10 +22,12 @@ export default defineConfig({
     },
   ],
 
-  webServer: {
-    command: "npm run preview",
-    port: 4173,
-    timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: !!process.env.CI
+    ? {
+        command: "npm run preview",
+        port: 4173,
+        timeout: 120 * 1000,
+        reuseExistingServer: !process.env.CI,
+      }
+    : undefined,
 });
