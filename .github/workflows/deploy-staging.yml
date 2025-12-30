@@ -19,7 +19,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
 
       - name: Cache Node modules
         uses: actions/cache@v3
@@ -47,6 +47,9 @@ jobs:
       TEST_USER_COMMON_PASSWORD: ${{ secrets.TEST_USER_COMMON_PASSWORD }}
 
     steps:
+      - name: Install dependencies
+        run: npm ci
+        
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
