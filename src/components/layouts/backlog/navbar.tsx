@@ -1,5 +1,13 @@
-import BacklogInfoDialog from "@/components/dialogs/backlog-info.dialog";
+import BacklogDeleteDialog from "@/components/dialogs/backlog-delete-dialog";
+import BacklogEditDialog from "@/components/dialogs/backlog-edit.dialog";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BacklogContext } from "@/contexts/backlog.context";
 import { ArrowLeft } from "lucide-react";
@@ -35,9 +43,43 @@ const Navbar = () => {
             {ctx?.backlogDetails.data?.name}
           </h1>
         </div>
-        <BacklogInfoDialog />
+        <NavMenu />
       </div>
     </div>
+  );
+};
+
+const NavMenu = () => {
+  const ctx = useContext(BacklogContext);
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost">Menu</Button>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent>
+          <DropdownMenuGroup>
+            <DropdownMenuItem
+              data-testid="update-dialog-trigger"
+              onClick={() => ctx?.dialogs.setEditDialogOpen(true)}
+            >
+              Edit
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              data-testid="delete-dialog-trigger"
+              onClick={() => ctx?.dialogs.setDeleteDialogOpen(true)}
+            >
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      <BacklogEditDialog />
+      <BacklogDeleteDialog />
+    </>
   );
 };
 
