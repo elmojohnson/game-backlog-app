@@ -4,15 +4,14 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { AlertCircleIcon, InfoIcon } from "lucide-react";
+import { AlertCircleIcon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { BacklogSchema, type BacklogDto } from "@/schemas/backlog.schema";
 import { useUpdateBacklogMutation } from "@/queries/mutations/backlog.mutation";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { BacklogContext } from "@/contexts/backlog.context";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
@@ -20,7 +19,7 @@ import { Textarea } from "../ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { Spinner } from "../ui/spinner";
 
-const BacklogInfoDialog = () => {
+const BacklogEditDialog = () => {
   const ctx = useContext(BacklogContext);
   const mutation = useUpdateBacklogMutation();
   const form = useForm<BacklogDto>({
@@ -35,14 +34,17 @@ const BacklogInfoDialog = () => {
     mutation.mutate({ id: ctx?.backlogDetails.data?.id!, ...data });
   };
 
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button size="icon" variant="ghost" data-testid="update-dialog-trigger">
-          <InfoIcon />
-        </Button>
-      </DialogTrigger>
+  useEffect(() => {
+    if (mutation.status === "success") {
+      ctx?.dialogs.setEditDialogOpen(false);
+    }
+  }, [mutation.status]);
 
+  return (
+    <Dialog
+      open={ctx?.dialogs.isEditDialogOpen}
+      onOpenChange={ctx?.dialogs.setEditDialogOpen}
+    >
       <DialogContent aria-describedby={undefined}>
         <DialogHeader>
           <DialogTitle>Backlog info</DialogTitle>
@@ -122,7 +124,7 @@ const BacklogInfoDialog = () => {
             {mutation.isPending && <Spinner />}
             Update
           </Button>
-          <Button variant="outline" disabled={mutation.isPending}>
+          <Button variant="outline" disabled={mutation.isPending} onClick={() => ctx?.dialogs.setEditDialogOpen(false)}>
             Close
           </Button>
         </DialogFooter>
@@ -131,4 +133,4 @@ const BacklogInfoDialog = () => {
   );
 };
 
-export default BacklogInfoDialog;
+export default BacklogEditDialog;

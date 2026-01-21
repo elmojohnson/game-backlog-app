@@ -85,3 +85,19 @@ export const updateBacklog = async ({
     statusText,
   };
 };
+
+export const deleteBacklog = async (id: number): Promise<Status> => {
+  const { status, statusText, error } = await supabase
+    .from("backlogs")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return {
+    status,
+    statusText,
+  };
+};

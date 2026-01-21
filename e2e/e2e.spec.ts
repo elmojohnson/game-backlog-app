@@ -20,7 +20,7 @@ test.describe.serial("E2E test", { tag: "@e2e" }, () => {
       await signUpPage.goTo();
       await signUpPage.signUp(user);
       await basePage.assertToast("Account created!");
-      await basePage.assertBacklogPage(true);
+      await basePage.assertBacklogsPage(true);
     });
 
     await test.step("Account page", async () => {
@@ -48,7 +48,7 @@ test.describe.serial("E2E test", { tag: "@e2e" }, () => {
         password: user.password,
       });
       await basePage.assertToast("Logged in");
-      await basePage.assertBacklogPage(true);
+      await basePage.assertBacklogsPage(true);
     });
 
     await test.step("Create a backlog", async () => {
@@ -61,14 +61,22 @@ test.describe.serial("E2E test", { tag: "@e2e" }, () => {
     });
 
     await test.step("Update backlog", async () => {
+      await viewBacklogPage.openDropdownMenu();
       await viewBacklogPage.openUpdateDialog();
       await viewBacklogPage.updateBacklog({
         name: "My Backlog 123",
         description: "This is an updated backlog",
       });
       await viewBacklogPage.assertToast("Updated!");
-      await viewBacklogPage.closeUpdateDialog();
       await viewBacklogPage.assertNavTitle("My Backlog 123");
+    });
+
+    await test.step("Delete backlog", async () => {
+      await viewBacklogPage.openDropdownMenu();
+      await viewBacklogPage.openDeleteDialog();
+      await viewBacklogPage.deleteBacklog();
+      await viewBacklogPage.assertToast("Backlog deleted");
+      await basePage.assertBacklogsPage(true);
     });
   });
 });
