@@ -1,5 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createBacklog, updateBacklog } from "../functions/backlog.function";
+import {
+  createBacklog,
+  deleteBacklog,
+  updateBacklog,
+} from "../functions/backlog.function";
 import { toast } from "sonner";
 
 export const useCreateBacklogMutation = () => {
@@ -25,6 +29,20 @@ export const useUpdateBacklogMutation = () => {
         queryKey: ["backlog", id],
       });
       toast.success("Updated!");
+    },
+  });
+};
+
+export const useDeleteBacklogMutation = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: deleteBacklog,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["myBacklogs"],
+      });
+      toast.success("Backlog deleted");
     },
   });
 };
