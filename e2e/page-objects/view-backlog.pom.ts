@@ -20,13 +20,17 @@ export class ViewBacklogPage extends BasePage {
     await expect(this.page.getByTestId("nav-title")).toHaveText(name);
   };
 
+  openDropdownMenu = async () => {
+    await this.page.getByTestId("dropdown-menu").click();
+  }
+
   openUpdateDialog = async () => {
     await this.page.getByTestId("update-dialog-trigger").click();
   };
 
-  closeUpdateDialog = async () => {
-    await this.page.keyboard.press("Escape");
-  };
+  openDeleteDialog = async () => {
+    await this.page.getByTestId("delete-dialog-trigger").click();
+  }
 
   updateBacklog = async ({ name, description }: BacklogDto) => {
     await this.nameInput.click();
@@ -38,4 +42,8 @@ export class ViewBacklogPage extends BasePage {
 
     await this.updateButton.click();
   };
+
+  deleteBacklog = async () => {
+    await this.page.getByTestId("delete-button").click();
+  }
 }

@@ -56,7 +56,7 @@ const NavMenu = () => {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost">Menu</Button>
+          <Button variant="ghost" data-testid="dropdown-menu">Menu</Button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent>

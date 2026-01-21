@@ -50,7 +50,7 @@ const BacklogDeleteDialog = () => {
           )}
         </div>
         <DialogFooter>
-          <Button onClick={handleDelete} disabled={mutation.isPending}>
+          <Button onClick={handleDelete} disabled={mutation.isPending} data-testid="delete-button">
             {mutation.isPending && <Spinner />}Yes
           </Button>
           <Button

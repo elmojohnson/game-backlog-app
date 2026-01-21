@@ -16,7 +16,7 @@ export class BasePage {
     this.toast = page.locator(".toast").first();
   }
 
-  assertBacklogPage = async (isEmpty: boolean = false) => {
+  assertBacklogsPage = async (isEmpty: boolean = false) => {
     await expect(this.page).toHaveURL("/backlogs");
 
     if (isEmpty) {
@@ -37,5 +37,9 @@ export class BasePage {
   assertToast = async (message: string) => {
     await this.toast.waitFor();
     await expect(this.toast).toHaveText(message);
+  };
+
+  assertToastDismissed = () => async () => {
+    await expect(this.toast).not.toBeVisible();
   };
 }
