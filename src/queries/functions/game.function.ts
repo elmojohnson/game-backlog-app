@@ -20,16 +20,16 @@ export const getGames = async ({
 
 export const getBacklogGames = async ({
   pageParam,
-  backlogId
+  backlogId,
 }: {
   pageParam: number;
-  backlogId: number
+  backlogId: number;
 }): Promise<{
   result: Game[];
   count: number | null;
   totalPages: number | null;
 }> => {
-  const limitPerPage = 15;
+  const limitPerPage = 25;
   const range = getRange(pageParam, limitPerPage);
 
   const user = await getCurrentUser();
@@ -63,6 +63,21 @@ export const addGameToBacklog = async ({
   raw_json,
 }: MutateGame) => {
   const user = await getCurrentUser();
+  const { error: searchError, count } = await supabase
+    .from("games")
+    .select("*", { count: "exact", head: true })
+    .eq("rawg_id", rawg_id)
+    .eq("user_id", user?.id)
+    .eq("backlog_id", backlog_id);
+
+  if (searchError) {
+    throw new Error(searchError.message);
+  }
+
+  if(count! >= 1) {
+    throw new Error("Game already exist in the backlog")
+  }
+
   const { data, error } = await supabase.from("games").insert({
     rawg_id,
     name,

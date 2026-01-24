@@ -8,13 +8,12 @@ export const useAddGameToBacklogMutation = () => {
   return useMutation({
     mutationFn: addGameToBacklog,
     onSuccess: (_, { backlog_id }) => {
-      toast.success("Game added");
       queryClient.invalidateQueries({
         queryKey: ["backlogGames", backlog_id],
       });
     },
     onError: (error) => {
-      console.error(error.message);
+      toast.error(error.message);
     },
   });
 };
