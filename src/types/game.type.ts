@@ -15,6 +15,11 @@ export interface MutateGame extends Pick<
   raw_json: Game;
 }
 
+export interface GameTable extends MutateGame {
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Platform {
   platform: Common;
 }

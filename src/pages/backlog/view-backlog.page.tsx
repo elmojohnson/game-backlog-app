@@ -1,4 +1,5 @@
 import BacklogAddGamesDialog from "@/components/dialogs/backlog-add-games-dialog";
+import BacklogGameItem from "@/components/items/backlog-game.item";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import BacklogProvider, { BacklogContext } from "@/contexts/backlog.context";
@@ -44,7 +45,7 @@ const GameList = () => {
 
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-4">
         <h1 className="font-bold text-lg">Games</h1>
         <Button onClick={() => ctx?.dialogs.setAddGamesDialogOpen(true)}>
           <Plus />
@@ -52,11 +53,11 @@ const GameList = () => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
         {data.pages.map((games, i) => (
           <React.Fragment key={i}>
             {games.result.map((game) => {
-              return <p key={game.id}>{game.name}</p>;
+              return <BacklogGameItem key={game.id} {...game} />
             })}
           </React.Fragment>
         ))}
@@ -67,6 +68,8 @@ const GameList = () => {
           disabled={isFetchingNextPage}
           onClick={() => fetchNextPage()}
           data-testid="load-more-button"
+          className="w-full"
+          variant="secondary"
         >
           {isFetchingNextPage && <Spinner />}
           Load more

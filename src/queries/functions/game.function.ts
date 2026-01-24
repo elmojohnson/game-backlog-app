@@ -1,5 +1,5 @@
 import rawg from "@/lib/rawg";
-import type { Game, MutateGame } from "@/types/game.type";
+import type { Game, GameTable, MutateGame } from "@/types/game.type";
 import type { Pagination } from "@/types/util.type";
 import supabase from "@/utils/supabase.util";
 import { getCurrentUser } from "./auth.function";
@@ -25,7 +25,7 @@ export const getBacklogGames = async ({
   pageParam: number;
   backlogId: number;
 }): Promise<{
-  result: Game[];
+  result: GameTable[];
   count: number | null;
   totalPages: number | null;
 }> => {
