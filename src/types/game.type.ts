@@ -7,6 +7,14 @@ export interface Game {
   genres: Common[];
 }
 
+export interface MutateGame extends Pick<
+  Game,
+  "id" | "name" | "slug" | "background_image"
+> {
+  backlog_id: number;
+  raw_json: Game;
+}
+
 export interface Platform {
   platform: Common;
 }
