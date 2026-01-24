@@ -3,6 +3,7 @@ import type { Game, MutateGame } from "@/types/game.type";
 import type { Pagination } from "@/types/util.type";
 import supabase from "@/utils/supabase.util";
 import { getCurrentUser } from "./auth.function";
+import { getRange, getTotalPages } from "@/utils/paginate.util";
 
 export const getGames = async ({
   pageParam,
@@ -17,13 +18,49 @@ export const getGames = async ({
   }
 };
 
+export const getBacklogGames = async ({
+  pageParam,
+  backlogId
+}: {
+  pageParam: number;
+  backlogId: number
+}): Promise<{
+  result: Game[];
+  count: number | null;
+  totalPages: number | null;
+}> => {
+  const limitPerPage = 15;
+  const range = getRange(pageParam, limitPerPage);
+
+  const user = await getCurrentUser();
+  const { data, error, count } = await supabase
+    .from("games")
+    .select("*", { count: "exact", head: false })
+    .eq("user_id", user?.id)
+    .eq("backlog_id", backlogId)
+    .order("created_at", { ascending: false })
+    .range(range[0], range[1]);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const totalPages = getTotalPages(count, limitPerPage);
+
+  return {
+    result: data,
+    count,
+    totalPages,
+  };
+};
+
 export const addGameToBacklog = async ({
   id: rawg_id,
   name,
   slug,
   background_image,
   backlog_id,
-  raw_json
+  raw_json,
 }: MutateGame) => {
   const user = await getCurrentUser();
   const { data, error } = await supabase.from("games").insert({
@@ -33,7 +70,7 @@ export const addGameToBacklog = async ({
     background_image,
     backlog_id,
     user_id: user?.id,
-    raw_json
+    raw_json,
   });
 
   if (error) {

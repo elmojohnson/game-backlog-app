@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getGames } from "../functions/game.function";
+import { getBacklogGames, getGames } from "../functions/game.function";
 
 export const useGamesInfiniteQuery = () => {
   return useInfiniteQuery({
@@ -12,6 +12,21 @@ export const useGamesInfiniteQuery = () => {
       }
 
       return lastPage.next;
+    },
+  });
+};
+
+export const useGetBacklogGamesInfiniteQuery = (backlogId: number) => {
+  return useInfiniteQuery({
+    queryKey: ["backlogGames", backlogId],
+    queryFn: ({ pageParam }) => getBacklogGames({ pageParam, backlogId }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, _, lastPageParam) => {
+      if (Math.ceil(lastPage.totalPages! / lastPageParam) <= 1) {
+        return undefined;
+      }
+
+      return lastPageParam + 1;
     },
   });
 };
