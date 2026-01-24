@@ -6,7 +6,7 @@ import { useAddGameToBacklogMutation } from "@/queries/mutations/game.mutation";
 import { BacklogContext } from "@/contexts/backlog.context";
 import { Spinner } from "../ui/spinner";
 
-const GameItem = (game: Game) => {
+const AddGameItem = (game: Game) => {
   const ctx = useContext(BacklogContext);
   const [isAdded, setAdded] = useState<boolean>(false);
   const mutation = useAddGameToBacklogMutation();
@@ -23,6 +23,8 @@ const GameItem = (game: Game) => {
 
   useEffect(() => {
     if (mutation.status === "success") {
+      setAdded(true);
+    } else if(mutation.status === "error" && mutation.error.message === "Game already exist in the backlog") {
       setAdded(true);
     }
   }, [mutation.status]);
@@ -49,4 +51,4 @@ const GameItem = (game: Game) => {
   );
 };
 
-export default GameItem;
+export default AddGameItem;

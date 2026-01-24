@@ -10,7 +10,7 @@ import {
 import { useGamesInfiniteQuery } from "@/queries/queries/game.query";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
-import GameItem from "../items/game.item";
+import AddGameItem from "../items/add-game.item";
 
 const BacklogAddGamesDialog = () => {
   const ctx = useContext(BacklogContext);
@@ -56,7 +56,7 @@ const Games = () => {
       {data.pages.map((games, i) => (
         <React.Fragment key={i}>
           {games.results.map((game) => {
-            return <GameItem key={game.id} {...game} />
+            return <AddGameItem key={game.id} {...game} />
           })}
         </React.Fragment>
       ))}
