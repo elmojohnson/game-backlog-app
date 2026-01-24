@@ -1,10 +1,18 @@
 import BacklogAddGamesDialog from "@/components/dialogs/backlog-add-games-dialog";
 import BacklogGameItem from "@/components/items/backlog-game.item";
 import { Button } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { Spinner } from "@/components/ui/spinner";
 import BacklogProvider, { BacklogContext } from "@/contexts/backlog.context";
 import { useGetBacklogGamesInfiniteQuery } from "@/queries/queries/game.query";
-import { Plus } from "lucide-react";
+import { Gamepad, Plus } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 
 const ViewBacklog = () => {
@@ -47,35 +55,67 @@ const GameList = () => {
     <div>
       <div className="flex justify-between mb-4">
         <h1 className="font-bold text-lg">Games</h1>
+        {data.pages[0].count !== 0 && (
+          <Button onClick={() => ctx?.dialogs.setAddGamesDialogOpen(true)}>
+            <Plus />
+            Add games
+          </Button>
+        )}
+      </div>
+
+      {data.pages[0].count === 0 ? (
+        <EmptyContents />
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+            {data.pages.map((games, i) => (
+              <React.Fragment key={i}>
+                {games.result.map((game) => {
+                  return <BacklogGameItem key={game.id} {...game} />;
+                })}
+              </React.Fragment>
+            ))}
+          </div>
+
+          {hasNextPage && (
+            <Button
+              disabled={isFetchingNextPage}
+              onClick={() => fetchNextPage()}
+              data-testid="load-more-button"
+              className="w-full"
+              variant="secondary"
+            >
+              {isFetchingNextPage && <Spinner />}
+              Load more
+            </Button>
+          )}
+        </>
+      )}
+    </div>
+  );
+};
+
+const EmptyContents = () => {
+  const ctx = useContext(BacklogContext);
+
+  return (
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <Gamepad />
+        </EmptyMedia>
+        <EmptyTitle data-testid="empty-backlog-title">
+          No games found
+        </EmptyTitle>
+        <EmptyDescription>No games listed on this backlog</EmptyDescription>
+      </EmptyHeader>
+      <EmptyContent>
         <Button onClick={() => ctx?.dialogs.setAddGamesDialogOpen(true)}>
           <Plus />
           Add games
         </Button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
-        {data.pages.map((games, i) => (
-          <React.Fragment key={i}>
-            {games.result.map((game) => {
-              return <BacklogGameItem key={game.id} {...game} />
-            })}
-          </React.Fragment>
-        ))}
-      </div>
-
-      {hasNextPage && (
-        <Button
-          disabled={isFetchingNextPage}
-          onClick={() => fetchNextPage()}
-          data-testid="load-more-button"
-          className="w-full"
-          variant="secondary"
-        >
-          {isFetchingNextPage && <Spinner />}
-          Load more
-        </Button>
-      )}
-    </div>
+      </EmptyContent>
+    </Empty>
   );
 };
 
