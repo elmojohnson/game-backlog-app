@@ -1,6 +1,7 @@
 import BacklogAddGamesDialog from "@/components/dialogs/backlog-add-games-dialog";
 import BacklogGameItem from "@/components/items/backlog-game.item";
 import { Button } from "@/components/ui/button";
+import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import {
   Empty,
   EmptyContent,
@@ -9,6 +10,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import BacklogProvider, { BacklogContext } from "@/contexts/backlog.context";
 import { useGetBacklogGamesInfiniteQuery } from "@/queries/queries/game.query";
@@ -44,7 +46,7 @@ const GameList = () => {
   }, [ctx?.backlogDetails.data?.id]);
 
   if (status === "pending") {
-    return <p>Loading...</p>;
+    return <SkeletonContents />;
   }
 
   if (status === "error") {
@@ -56,7 +58,10 @@ const GameList = () => {
       <div className="flex justify-between mb-4">
         <h1 className="font-bold text-lg">Games</h1>
         {data.pages[0].count !== 0 && (
-          <Button onClick={() => ctx?.dialogs.setAddGamesDialogOpen(true)} data-testid="add-games-button">
+          <Button
+            onClick={() => ctx?.dialogs.setAddGamesDialogOpen(true)}
+            data-testid="add-games-button"
+          >
             <Plus />
             Add games
           </Button>
@@ -67,7 +72,10 @@ const GameList = () => {
         <EmptyContents />
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4" data-testid="game-list">
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4"
+            data-testid="game-list"
+          >
             {data.pages.map((games, i) => (
               <React.Fragment key={i}>
                 {games.result.map((game) => {
@@ -110,12 +118,50 @@ const EmptyContents = () => {
         <EmptyDescription>No games listed on this backlog</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button onClick={() => ctx?.dialogs.setAddGamesDialogOpen(true)} data-testid="add-games-button">
+        <Button
+          onClick={() => ctx?.dialogs.setAddGamesDialogOpen(true)}
+          data-testid="add-games-button"
+        >
           <Plus />
           Add games
         </Button>
       </EmptyContent>
     </Empty>
+  );
+};
+
+const SkeletonContents = () => {
+  return (
+    <div>
+      <div className="flex justify-between mb-4">
+        <Skeleton className="h-7 w-18" />
+        <Skeleton className="h-10 w-30" />
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+        {[...Array(15)].map((_, i) => {
+          return (
+            <Card
+              key={i}
+              className="flex flex-col justify-between pt-0 overflow-hidden"
+              data-testid="game-item"
+            >
+              <Skeleton className="aspect-video w-full object-cover" />
+              <CardHeader>
+                <Skeleton className="h-5 w-50" />
+                <Skeleton className="h-5 w-32" />
+              </CardHeader>
+              <CardFooter className="flex flex-col items-start gap-2">
+                <div className="flex gap-2">
+                  <Skeleton className="h-8 w-8" />
+                  <Skeleton className="h-8 w-8" />
+                </div>
+                <Skeleton className="h-3 w-32" />
+              </CardFooter>
+            </Card>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
