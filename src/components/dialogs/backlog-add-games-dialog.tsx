@@ -11,6 +11,7 @@ import { useGamesInfiniteQuery } from "@/queries/queries/game.query";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
 import AddGameItem from "../items/add-game.item";
+import { Skeleton } from "../ui/skeleton";
 
 const BacklogAddGamesDialog = () => {
   const ctx = useContext(BacklogContext);
@@ -44,7 +45,7 @@ const Games = () => {
   } = useGamesInfiniteQuery();
 
   if (status === "pending") {
-    return <p>Loading...</p>;
+    return <SkeletonContents />;
   }
 
   if (status === "error") {
@@ -75,6 +76,25 @@ const Games = () => {
           {isFetchingNextPage && <Spinner />}Load more
         </Button>
       )}
+    </div>
+  );
+};
+
+const SkeletonContents = () => {
+  return (
+    <div className="-mx-4 max-h-[50vh] overflow-y-auto px-4">
+      {[...Array(15)].map((_, i) => {
+        return (
+          <div className="flex justify-between py-4 gap-3 group" key={i}>
+            <div>
+              <Skeleton className="h-4 w-50 mb-3" />
+              <Skeleton className="h-3 w-32" />
+            </div>
+
+            <Skeleton className="h-10 w-10" />
+          </div>
+        );
+      })}
     </div>
   );
 };
