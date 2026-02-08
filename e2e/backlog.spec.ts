@@ -4,9 +4,16 @@ import { test } from "./fixtures";
 let userId: string;
 
 test.beforeEach(async ({ apiUtil }) => {
-  const id = await apiUtil.signIn(user.email, user.password);
-  await apiUtil.deleteAllBacklogs(id);
-  userId = id;
+  const existingUser = await apiUtil.signIn(user.email, user.password);
+
+  if (existingUser.error && existingUser.error.code === "invalid_credentials") {
+    const newUser = await apiUtil.signUp(user.email, user.password);
+    await apiUtil.deleteAllBacklogs(newUser.data.user!.id);
+    userId = newUser.data.user!.id;
+  } else {
+    await apiUtil.deleteAllBacklogs(existingUser.data.user!.id);
+    userId = existingUser.data.user!.id;
+  }
 });
 
 test.afterEach(async ({ page, apiUtil }) => {

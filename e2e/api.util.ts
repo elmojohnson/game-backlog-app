@@ -3,17 +3,33 @@ import supabase from "./supabase";
 export class ApiUtil {
   constructor() {}
 
+  signUp = async (email: string, password: string) => {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name: "Tester",
+        },
+      },
+    });
+
+    return {
+      data,
+      error,
+    };
+  };
+
   signIn = async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    return data.user.id;
+    return {
+      data,
+      error,
+    };
   };
 
   deleteAllBacklogs = async (user_id: string) => {
@@ -22,13 +38,6 @@ export class ApiUtil {
       .delete()
       .eq("user_id", user_id);
 
-    if (error) {
-      throw new Error(error.message);
-    }
-
-    return {
-      status,
-      statusText,
-    };
+    return { status, statusText, error };
   };
 }
