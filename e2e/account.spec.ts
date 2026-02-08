@@ -8,6 +8,10 @@ const user: SignUpDto = {
   password: faker.internet.password(),
 };
 
+test.afterEach(async ({ page }) => {
+  await page.close();
+});
+
 test(
   "Account",
   { tag: "@account" },
