@@ -1,5 +1,7 @@
+import { Navigate } from "react-router";
+
 const Home = () => {
-  return <div>Home</div>;
+  return <Navigate to="/backlogs" />;
 };
 
 export default Home;

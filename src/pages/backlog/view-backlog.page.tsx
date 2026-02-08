@@ -56,7 +56,7 @@ const GameList = () => {
       <div className="flex justify-between mb-4">
         <h1 className="font-bold text-lg">Games</h1>
         {data.pages[0].count !== 0 && (
-          <Button onClick={() => ctx?.dialogs.setAddGamesDialogOpen(true)}>
+          <Button onClick={() => ctx?.dialogs.setAddGamesDialogOpen(true)} data-testid="add-games-button">
             <Plus />
             Add games
           </Button>
@@ -67,7 +67,7 @@ const GameList = () => {
         <EmptyContents />
       ) : (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4" data-testid="game-list">
             {data.pages.map((games, i) => (
               <React.Fragment key={i}>
                 {games.result.map((game) => {
@@ -110,7 +110,7 @@ const EmptyContents = () => {
         <EmptyDescription>No games listed on this backlog</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button onClick={() => ctx?.dialogs.setAddGamesDialogOpen(true)}>
+        <Button onClick={() => ctx?.dialogs.setAddGamesDialogOpen(true)} data-testid="add-games-button">
           <Plus />
           Add games
         </Button>

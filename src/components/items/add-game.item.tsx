@@ -24,15 +24,21 @@ const AddGameItem = (game: Game) => {
   useEffect(() => {
     if (mutation.status === "success") {
       setAdded(true);
-    } else if(mutation.status === "error" && mutation.error.message === "Game already exist in the backlog") {
+    } else if (
+      mutation.status === "error" &&
+      mutation.error.message === "Game already exist in the backlog"
+    ) {
       setAdded(true);
     }
   }, [mutation.status]);
 
   return (
-    <div className="flex justify-between py-4 gap-3 group">
+    <div
+      className="flex justify-between py-4 gap-3 group"
+      data-testid="add-game-item"
+    >
       <div>
-        <label className="font-bold group-hover:text-primary">
+        <label className="font-bold group-hover:text-primary" data-testid="name">
           {game.name}
         </label>
         <p className="text-xs text-slate-500">
@@ -44,6 +50,7 @@ const AddGameItem = (game: Game) => {
         onClick={() => handleAddGame(game)}
         disabled={isAdded || mutation.isPending}
         variant={isAdded ? "secondary" : "default"}
+        data-testid="add-button"
       >
         {mutation.isPending ? <Spinner /> : isAdded ? <Check /> : <Plus />}
       </Button>

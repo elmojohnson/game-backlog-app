@@ -20,7 +20,7 @@ const BacklogAddGamesDialog = () => {
       open={ctx?.dialogs.isAddGamesDialogOpen}
       onOpenChange={ctx?.dialogs.setAddGamesDialogOpen}
     >
-      <DialogContent>
+      <DialogContent data-testid="add-games-dialog">
         <DialogHeader>
           <DialogTitle>Add games</DialogTitle>
           <DialogDescription>
@@ -52,11 +52,14 @@ const Games = () => {
   }
 
   return (
-    <div className="-mx-4 max-h-[50vh] overflow-y-auto px-4">
+    <div
+      className="-mx-4 max-h-[50vh] overflow-y-auto px-4"
+      data-testid="add-games-list"
+    >
       {data.pages.map((games, i) => (
         <React.Fragment key={i}>
           {games.results.map((game) => {
-            return <AddGameItem key={game.id} {...game} />
+            return <AddGameItem key={game.id} {...game} />;
           })}
         </React.Fragment>
       ))}

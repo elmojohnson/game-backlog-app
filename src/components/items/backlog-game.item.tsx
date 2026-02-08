@@ -16,7 +16,7 @@ const BacklogGameItem = (game: GameTable) => {
   return (
     <Card
       className="flex flex-col justify-between pt-0 overflow-hidden"
-      test-dataid="game-item"
+      data-testid="game-item"
     >
       <img
         className="aspect-video w-full object-cover"
@@ -26,12 +26,12 @@ const BacklogGameItem = (game: GameTable) => {
         <CardTitle
           className="hover:text-primary hover:cursor-pointer w-fit"
           onClick={() => navigate("/games/" + game.id)}
-          data-testid="game-item-title"
+          data-testid="name"
         >
           {game.name}
         </CardTitle>
         <CardDescription>
-          <p>{game.raw_json.genres.map((gen) => gen.name).join(", ")}</p>
+          <p data-testid="genres">{game.raw_json.genres.map((gen) => gen.name).join(", ")}</p>
         </CardDescription>
       </CardHeader>
       <CardFooter className="flex flex-col items-start gap-2">

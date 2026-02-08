@@ -29,3 +29,8 @@ export interface Common {
   slug: string;
   name: string;
 }
+
+export interface TestGame {
+  name: string;
+  genres: string[];
+}
