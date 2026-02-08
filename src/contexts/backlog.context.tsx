@@ -16,6 +16,8 @@ type Dialogs = {
   setEditDialogOpen: (value: boolean) => void;
   isDeleteDialogOpen: boolean;
   setDeleteDialogOpen: (value: boolean) => void;
+  isAddGamesDialogOpen: boolean;
+  setAddGamesDialogOpen: (value: boolean) => void;
 };
 
 type BacklogContextType = {
@@ -31,6 +33,7 @@ const BacklogProvider = ({ children }: { children: React.ReactNode }) => {
 
   const [isEditDialogOpen, setEditDialogOpen] = useState<boolean>(false);
   const [isDeleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
+  const [isAddGamesDialogOpen, setAddGamesDialogOpen] = useState<boolean>(false);
 
   return (
     <BacklogContext.Provider
@@ -41,6 +44,8 @@ const BacklogProvider = ({ children }: { children: React.ReactNode }) => {
           setEditDialogOpen,
           isDeleteDialogOpen,
           setDeleteDialogOpen,
+          isAddGamesDialogOpen,
+          setAddGamesDialogOpen
         },
       }}
     >

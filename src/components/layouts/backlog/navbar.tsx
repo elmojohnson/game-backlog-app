@@ -33,7 +33,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className="py-3 shadow">
+    <div className="py-3 shadow sticky top-0 z-50 bg-accent">
       <div className="wrapper flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Button size="icon" variant="ghost" onClick={() => navigate(-1)}>

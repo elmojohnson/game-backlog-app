@@ -34,17 +34,27 @@ npm run dev:localdev
 npm run dev:staging
 ```
 ---
-## Sync local DB to remote DB
+## Sync Supabase local to remote
 https://supabase.com/docs/guides/local-development/overview
 
 **Creating a migation file**
 ```
-npx supabase db diff --use-migra initial_schema -f initial_schema
+npx supabase migration new add_new_table
 ```
 
 **Login**
 ```
 npx supabase link --project-ref <project-id>
+```
+> Do this if not already logged in
+
+**Manually add the schema to the .sql file created**
+```
+create table public.new_table (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  created_at timestamptz default now()
+);
 ```
 
 **Pull changes from remote DB**

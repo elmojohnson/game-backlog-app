@@ -1,46 +1,30 @@
-import { SignUpDto } from "../src/schemas/auth.schema";
+import { user, games } from "./data/test.data";
 import { test } from "./fixtures";
-import { faker } from "@faker-js/faker";
 
-const user: SignUpDto = {
-  name: faker.person.fullName(),
-  email: faker.internet.email().toLocaleLowerCase(),
-  password: faker.internet.password(),
-};
+let userId: string;
 
-test.describe.serial("E2E test", { tag: "@e2e" }, () => {
-  test("Account", async ({
-    basePage,
-    signUpPage,
-    backlogsPage,
-    accountPage,
-    signInPage,
-  }) => {
-    await test.step("Create an account", async () => {
-      await signUpPage.goTo();
-      await signUpPage.signUp(user);
-      await basePage.assertToast("Account created!");
-      await basePage.assertBacklogsPage(true);
-    });
+test.beforeEach(async ({ apiUtil }) => {
+  const existingUser = await apiUtil.signIn(user.email, user.password);
 
-    await test.step("Account page", async () => {
-      await backlogsPage.accountLink.click();
-      await backlogsPage.assertAccountPage();
-      await accountPage.assertAccountInfo(user.name, user.email);
-    });
+  if (existingUser.error && existingUser.error.code === "invalid_credentials") {
+    const newUser = await apiUtil.signUp(user.email, user.password);
+    await apiUtil.deleteAllBacklogs(newUser.data.user!.id);
+    userId = newUser.data.user!.id;
+  } else {
+    await apiUtil.deleteAllBacklogs(existingUser.data.user!.id);
+    userId = existingUser.data.user!.id;
+  }
+});
 
-    await test.step("Sign out", async () => {
-      await accountPage.signOut();
-      await signInPage.assertSignInPage();
-    });
-  });
+test.afterEach(async ({ page, apiUtil }) => {
+  await apiUtil.deleteAllBacklogs(userId);
+  await page.close();
+});
 
-  test("Backlog management", async ({
-    basePage,
-    signInPage,
-    backlogsPage,
-    viewBacklogPage,
-  }) => {
+test(
+  "Backlog management",
+  { tag: "@backlog" },
+  async ({ basePage, signInPage, backlogsPage, viewBacklogPage }) => {
     await test.step("Sign in", async () => {
       await signInPage.goTo();
       await signInPage.signIn({
@@ -71,6 +55,16 @@ test.describe.serial("E2E test", { tag: "@e2e" }, () => {
       await viewBacklogPage.assertNavTitle("My Backlog 123");
     });
 
+    await test.step("Add games", async () => {
+      await viewBacklogPage.openAddGamesDialog();
+      await viewBacklogPage.addGames(games);
+      await viewBacklogPage.closeAddGamesDialog();
+    });
+
+    await test.step("Browse games", async () => {
+      await viewBacklogPage.assertGames(games);
+    });
+
     await test.step("Delete backlog", async () => {
       await viewBacklogPage.openDropdownMenu();
       await viewBacklogPage.openDeleteDialog();
@@ -78,5 +72,5 @@ test.describe.serial("E2E test", { tag: "@e2e" }, () => {
       await viewBacklogPage.assertToast("Backlog deleted");
       await basePage.assertBacklogsPage(true);
     });
-  });
-});
+  },
+);

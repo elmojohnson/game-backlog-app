@@ -1,5 +1,6 @@
 import type { SignInDto, SignUpDto } from "@/schemas/auth.schema";
 import supabase from "@/utils/supabase.util";
+import type { Session, User, WeakPassword } from "@supabase/supabase-js";
 
 // SIGN UP
 export const signUpWIthEmailAndPassword = async ({
@@ -25,7 +26,14 @@ export const signUpWIthEmailAndPassword = async ({
 };
 
 // SIGN IN
-export const signInWithPassword = async ({ email, password }: SignInDto) => {
+export const signInWithPassword = async ({
+  email,
+  password,
+}: SignInDto): Promise<{
+  user: User;
+  session: Session;
+  weakPassword?: WeakPassword;
+}> => {
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,

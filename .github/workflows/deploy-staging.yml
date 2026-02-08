@@ -11,6 +11,7 @@ jobs:
     env:
       VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
       VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+      VITE_RAWG_API_KEY: ${{ secrets.VITE_RAWG_API_KEY }}
 
     steps:
       - name: Checkout repository
@@ -51,6 +52,8 @@ jobs:
       TEST_BASE_URL: ${{ vars.TEST_BASE_URL }}
       TEST_REGISTERED_USER_EMAIL: ${{ vars.TEST_REGISTERED_USER_EMAIL }}
       TEST_USER_COMMON_PASSWORD: ${{ secrets.TEST_USER_COMMON_PASSWORD }}
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
 
     steps:
       - name: Checkout repository

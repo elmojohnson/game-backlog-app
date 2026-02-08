@@ -10,8 +10,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test:e2e": "npx playwright test e2e.spec.ts",
-    "test:e2e-ui": "npx playwright test e2e.spec.ts --ui",
+    "test:e2e": "npx playwright test",
+    "test:e2e-ui": "npx playwright test --ui",
     "test:e2e-report": "npx playwright show-report"
   },
   "dependencies": {
@@ -25,6 +25,7 @@
     "@supabase/supabase-js": "^2.89.0",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-query": "^5.90.12",
+    "axios": "^1.13.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^17.2.3",
