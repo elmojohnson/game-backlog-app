@@ -53,6 +53,10 @@ const GameList = () => {
     return <p>{error.message}</p>;
   }
 
+  if (status === "success" && data.pages[0].count === 0) {
+    return <EmptyContents />;
+  }
+
   return (
     <div>
       <div className="flex justify-between mb-4">
@@ -68,36 +72,30 @@ const GameList = () => {
         )}
       </div>
 
-      {data.pages[0].count === 0 ? (
-        <EmptyContents />
-      ) : (
-        <>
-          <div
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4"
-            data-testid="game-list"
-          >
-            {data.pages.map((games, i) => (
-              <React.Fragment key={i}>
-                {games.result.map((game) => {
-                  return <BacklogGameItem key={game.id} {...game} />;
-                })}
-              </React.Fragment>
-            ))}
-          </div>
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4"
+        data-testid="game-list"
+      >
+        {data.pages.map((games, i) => (
+          <React.Fragment key={i}>
+            {games.result.map((game) => {
+              return <BacklogGameItem key={game.id} {...game} />;
+            })}
+          </React.Fragment>
+        ))}
+      </div>
 
-          {hasNextPage && (
-            <Button
-              disabled={isFetchingNextPage}
-              onClick={() => fetchNextPage()}
-              data-testid="load-more-button"
-              className="w-full"
-              variant="secondary"
-            >
-              {isFetchingNextPage && <Spinner />}
-              Load more
-            </Button>
-          )}
-        </>
+      {hasNextPage && (
+        <Button
+          disabled={isFetchingNextPage}
+          onClick={() => fetchNextPage()}
+          data-testid="load-more-button"
+          className="w-full"
+          variant="secondary"
+        >
+          {isFetchingNextPage && <Spinner />}
+          Load more
+        </Button>
       )}
     </div>
   );
